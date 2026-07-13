@@ -3,7 +3,12 @@ import time
 from flask import *
 
 app=Flask(__name__)
-
+places=[["_","_","_"],["_","_","_"],["_","_","_"]]
+user=[[False,False,False],[False,False,False],[False,False,False]]
+pc=[[False,False,False],[False,False,False],[False,False,False]]
+last=-1
+placed=None
+lis=list(range(1,10))
 @app.route('/',methods=['post','get'])
 def place():
     global placed,places,lis
@@ -212,12 +217,6 @@ def check_win():
     return False,'DOe'
 
 if __name__=='__main__':
-    places=[["_","_","_"],["_","_","_"],["_","_","_"]]
-    user=[[False,False,False],[False,False,False],[False,False,False]]
-    pc=[[False,False,False],[False,False,False],[False,False,False]]
-    last=-1
-    placed=None
-    lis=list(range(1,10))
     app.run(debug=True)
 
 
