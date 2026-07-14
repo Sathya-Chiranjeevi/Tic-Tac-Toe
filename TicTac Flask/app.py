@@ -8,36 +8,55 @@ user=[[False,False,False],[False,False,False],[False,False,False]]
 pc=[[False,False,False],[False,False,False],[False,False,False]]
 last=-1
 placed=None
+Start=True
 lis=list(range(1,10))
+name=""
+
+
 @app.route('/',methods=['post','get'])
 def place():
-    global placed,places,lis,user,pc,last
+    global placed,places,lis,user,pc,last,Start,name
+    if Start:
+        Start = False
+        return redirect('/intro')
+    place=[1,f"{name} Lets start the game !!"]
     if request.method=='POST':
         p=int(request.form['place'])
         player_turn(p-1)
         if check_win()[0]:
             return render_template('Win.html',who=check_win()[1],places=places,lis=lis)
         if placed:
-            place=system()
+            place=list(system())
+            place[1]=name+" "+place[1]
             lis[p-1]=" "
             lis[place[0]-1]=" "
         if check_win()[0]:
-            return render_template('Win.html',who=check_win()[1],places=places,lis=lis)
-        return render_template('interface.html',places=places,placed=placed,lis=lis)
-    return render_template('interface.html',places=places,lis=lis)
+            return render_template('Win.html',who=check_win()[1],places=places,lis=lis,name=name)
+        return render_template('interface.html',places=places,placed=placed,lis=lis,place=place,name=name)
+    if Start:
+        Start=False
+        return render_template('intro.html')
+    else:
+        return render_template('interface.html',places=places,lis=lis,place=place,name=name)
 
-@app.route("/reset", methods=["POST"])
+@app.route("/reset", methods=["POST",'get'])
 def reset():
-    global places, user, pc, last, placed, lis
-
+    global places, user, pc, last, placed, lis,Start
     places = [["_","_","_"],["_","_","_"],["_","_","_"]]
     user = [[False]*3 for _ in range(3)]
     pc = [[False]*3 for _ in range(3)]
     last = -1
     placed = None
     lis = list(range(1,10))
-
     return redirect("/")
+
+@app.route('/intro',methods=['post','get'])
+def some():
+    global name
+    if request.method=='POST':
+        name = (request.form['name']).title()
+        return redirect('/reset')
+    return render_template('intro.html')
 
 
 def player_turn(n):
@@ -85,7 +104,7 @@ def system():
                     break
             places[t//3][t%3]='O'
             pc[t//3][t%3]=True
-            return (t+1,"I placed at ",t+1," position")
+            return (t+1,f"I placed at {t+1} position")
 
     #Attack@2Win
     elif (sum(pr1)==2 and sum(r1)!=1) or (sum(pr2)==2 and sum(r2)!=1) or (sum(pr3)==2 and sum(r3)!=1):
@@ -232,6 +251,5 @@ def check_win():
 
 if __name__=='__main__':
     app.run(debug=True)
-
 
 
