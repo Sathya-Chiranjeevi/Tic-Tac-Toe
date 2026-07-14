@@ -13,31 +13,68 @@ lis=list(range(1,10))
 name=""
 
 
-@app.route('/',methods=['post','get'])
+@app.route('/', methods=['GET', 'POST'])
 def place():
-    global placed,places,lis,user,pc,last,Start,name
-    if Start:
-        Start = False
-        return redirect('/intro')
-    place=[1,f"{name} Lets start the game !!"]
-    if request.method=='POST':
-        p=int(request.form['place'])
-        player_turn(p-1)
-        if check_win()[0]:
-            return render_template('Win.html',who=check_win()[1],places=places,lis=lis)
-        if placed:
-            place=list(system())
-            place[1]=name+" "+place[1]
-            lis[p-1]=" "
-            lis[place[0]-1]=" "
-        if check_win()[0]:
-            return render_template('Win.html',who=check_win()[1],places=places,lis=lis,name=name)
-        return render_template('interface.html',places=places,placed=placed,lis=lis,place=place,name=name)
-    if Start:
-        Start=False
-        return render_template('intro.html')
-    else:
-        return render_template('interface.html',places=places,lis=lis,place=place,name=name)
+    global placed, places, lis, user, pc, last, name
+
+    place = [1, f"{name} Lets start the game !!"]
+
+    if request.method == "POST":
+
+        # Intro page submitted
+        if "name" in request.form:
+            name = request.form["name"].title()
+
+            return render_template(
+                "interface.html",
+                places=places,
+                lis=lis,
+                place=place,
+                placed=None,
+                name=name
+            )
+
+        # Game page submitted
+        elif "place" in request.form:
+            p = int(request.form["place"])
+
+            player_turn(p - 1)
+
+            if check_win()[0]:
+                return render_template(
+                    "Win.html",
+                    who=check_win()[1],
+                    places=places,
+                    lis=lis,
+                    name=name
+                )
+
+            if placed:
+                place = list(system())
+                place[1] = name + " , " + place[1]
+                lis[p - 1] = " "
+                lis[place[0] - 1] = " "
+
+            if check_win()[0]:
+                return render_template(
+                    "Win.html",
+                    who=check_win()[1],
+                    places=places,
+                    lis=lis,
+                    name=name
+                )
+
+            return render_template(
+                "interface.html",
+                places=places,
+                placed=placed,
+                lis=lis,
+                place=place,
+                name=name
+            )
+
+    # First visit
+    return render_template("intro.html")
 
 @app.route("/reset", methods=["POST",'get'])
 def reset():
@@ -49,15 +86,6 @@ def reset():
     placed = None
     lis = list(range(1,10))
     return redirect("/")
-
-@app.route('/intro',methods=['post','get'])
-def some():
-    global name
-    if request.method=='POST':
-        name = (request.form['name']).title()
-        return redirect('/reset')
-    return render_template('intro.html')
-
 
 def player_turn(n):
     global places,last,placed
@@ -251,5 +279,3 @@ def check_win():
 
 if __name__=='__main__':
     app.run(debug=True)
-
-
