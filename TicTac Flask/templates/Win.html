@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <title>Winner</title>
 </head>
-<body>
-
-<table border="10" cellpadding="10" style="margin: auto; border: 10px solid black;">
+<body bgcolor="#fff8dc">
+<header>
+		<center>{% if who=='O' %}
+<h1>YAYY I won the match!!</h1>
+{% elif who=='Draw' %}
+<h1>The match is a draw!!</h1>
+{% else %}
+<h1>YOU won the match!!</h1>
+{% endif %}</center>
+	</header>
+<center><table border="10" cellpadding="10" bgcolor="silver">
     <tr>
         <th>&emsp;{{places[0][0]}}&emsp;</th>
         <th>&emsp;{{places[0][1]}}&emsp;</th>
@@ -22,19 +30,13 @@
         <th>&emsp;{{places[2][1]}}&emsp;</th>
         <th>&emsp;{{places[2][2]}}&emsp;</th>
     </tr>
-</table>
-
-{% if who=='O' %}
-<h1>YAYY I won the match!!</h1>
-{% elif who=='Draw' %}
-<h1>The match is a draw!!</h1>
-{% else %}
-<h1>YOU won the match!!</h1>
-{% endif %}
-
+</table></center>
+<h1></h1>
+<h1></h1>
+<h1></h1>
+<h1></h1>
 <form action="/reset" method="post">
-    <button type="submit">Play Again</button>
+    <center><button type="submit">Play Again</button></center>
 </form>
-
 </body>
 </html>
