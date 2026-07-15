@@ -7,11 +7,11 @@
 <body bgcolor="#fff8dc">
 <header>
 		<center>{% if who=='O' %}
-<h1>YAYY I won the match!!</h1>
+<h1>{{name}} I won the match!!</h1>
 {% elif who=='Draw' %}
 <h1>The match is a draw!!</h1>
 {% else %}
-<h1>YOU won the match!!</h1>
+<h1>{{name}} You won the match!!</h1>
 {% endif %}</center>
 	</header>
 <center><table border="10" cellpadding="10" bgcolor="silver">
