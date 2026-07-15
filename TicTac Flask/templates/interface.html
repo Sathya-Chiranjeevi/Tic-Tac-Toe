@@ -37,14 +37,14 @@
             <td>&emsp;{{lis[8]}}&emsp;</td>
         </tr>
     </table></center>
-    <p>{{place[1]}}</p>
+    <p><b>{{place[1]}}</b></p>
     <form method="post">
     {% if placed %}
-        <h3>Enter the place : <input type="number" min="1" max="9" name="place" required> <button type="submit">Placee!!</button> </h3>
+        <h2>Enter the place : <input type="number" min="1" max="9" name="place" required> <button type="submit">Placee!!</button> </h2>
     {% elif placed==False %}
-        <h3>OOPS, The place is already occupied try again!!: <input type="number" min="1" max="9" name="place" required> <button type="submit">Placee!!</button></h3>
+        <h2>OOPS, The place is already occupied try again!!: <input type="number" min="1" max="9" name="place" required> <button type="submit">Placee!!</button></h2>
     {% else %}
-        <h3>Enter the place : <input type="number" min="1" max="9" name="place" required> <button type="submit">Placee!!</button> </h3>
+        <h2>Enter the place : <input type="number" min="1" max="9" name="place" required> <button type="submit">Placee!!</button> </h2>
     {% endif %}
     </form>
 
