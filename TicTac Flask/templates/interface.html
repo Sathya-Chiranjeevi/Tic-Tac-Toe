@@ -1,55 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Game</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tic-Tac-Toe</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #fff8dc;
+            font-family: Arial, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        /* Header */
+
+        .header {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .header h1 {
+            margin: 0 0 6px;
+            font-size: 28px;
+            color: #222;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Game area */
+
+        .game-area {
+            background: white;
+            border-radius: 14px;
+            padding: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Board */
+
+        .board {
+            width: 270px;
+            height: 270px;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+
+            gap: 6px;
+        }
+
+        .cell {
+            border: none;
+            background: #fff8dc;
+
+            border-radius: 8px;
+
+            font-size: 42px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transition: background 0.15s;
+        }
+
+        .cell:hover:not(:disabled) {
+            background: #ffefad;
+        }
+
+        .cell:disabled {
+            cursor: default;
+        }
+
+        /* Status */
+
+        .side-panel {
+            width: 150px;
+            text-align: center;
+        }
+
+        .status-title {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .status {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.4;
+
+            min-height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Reset */
+
+        .reset-btn {
+            margin-top: 15px;
+
+            width: 100%;
+            padding: 9px 12px;
+
+            border: 1px solid #ddd;
+            border-radius: 7px;
+
+            background: white;
+            color: #333;
+
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background: #f5f5f5;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .game-area {
+                flex-direction: column;
+                gap: 15px;
+                padding: 16px;
+            }
+
+            .board {
+                width: min(75vw, 270px);
+                height: min(75vw, 270px);
+            }
+
+            .side-panel {
+                width: 100%;
+            }
+
+            .reset-btn {
+                width: 150px;
+            }
+        }
+    </style>
 </head>
-<body bgcolor="#fff8dc">
-<header>
-		<center><h1>welcome to the game {{name}}</h1>
-		<p>YOU(X) vs Computer(O)</p></center>
-	</header>
 
-    <center><table border="8" cellpadding="12" cellspacing="5" bgcolor="silver">
-        <tr>
-            <th>&emsp;{{places[0][0]}}&emsp;</th>
-            <th>&emsp;{{places[0][1]}}&emsp;</th>
-            <th>&emsp;{{places[0][2]}}&emsp;</th>
-            <th rowspan="3">&emsp;&emsp;&emsp;&emsp;&emsp;</th>
-            <td>&emsp;{{lis[0]}}&emsp;</td>
-            <td>&emsp;{{lis[1]}}&emsp;</td>
-            <td>&emsp;{{lis[2]}}&emsp;</td>
+<body>
 
-        </tr>
-        <tr>
-            <th>&emsp;{{places[1][0]}}&emsp;</th>
-            <th>&emsp;{{places[1][1]}}&emsp;</th>
-            <th>&emsp;{{places[1][2]}}&emsp;</th>
-            <td>&emsp;{{lis[3]}}&emsp;</td>
-            <td>&emsp;{{lis[4]}}&emsp;</td>
-            <td>&emsp;{{lis[5]}}&emsp;</td>
-        </tr>
-        <tr>
-            <th>&emsp;{{places[2][0]}}&emsp;</th>
-            <th>&emsp;{{places[2][1]}}&emsp;</th>
-            <th>&emsp;{{places[2][2]}}&emsp;</th>
-            <td>&emsp;{{lis[6]}}&emsp;</td>
-            <td>&emsp;{{lis[7]}}&emsp;</td>
-            <td>&emsp;{{lis[8]}}&emsp;</td>
-        </tr>
-    </table></center>
-    <p><b>{{place[1]}}</b></p>
-    <form method="post">
-    {% if placed %}
-        <h2>Enter the place : <input type="number" min="1" max="9" name="place" required> <button type="submit">Placee!!</button> </h2>
-    {% elif placed==False %}
-        <h2>OOPS, The place is already occupied try again!!: <input type="number" min="1" max="9" name="place" required> <button type="submit">Placee!!</button></h2>
-    {% else %}
-        <h2>Enter the place : <input type="number" min="1" max="9" name="place" required> <button type="submit">Placee!!</button> </h2>
-    {% endif %}
-    </form>
+<div class="game-container">
 
-    <form action="/reset" method="post">
-    <button type="submit">Reset Game</button>
-</form>
+    <!-- Header -->
+
+    <div class="header">
+
+        <h1>Welcome, {{ name }}</h1>
+
+        <p>
+            YOU · X &nbsp;&nbsp; vs &nbsp;&nbsp; COMPUTER · O
+        </p>
+
+    </div>
+
+
+    <!-- Game -->
+
+    <div class="game-area">
+
+        <!-- Board -->
+
+        <form method="post" id="moveForm">
+
+            <input
+                type="hidden"
+                name="place"
+                id="selectedPlace"
+            >
+
+            <div class="board">
+
+                <!-- 1 -->
+                <button
+                    type="button"
+                    class="cell"
+                    onclick="playMove(1)"
+                    {% if places[0][0] != '_' %}disabled{% endif %}
+                >
+                    {% if places[0][0] == '✘' %}
+                        ✘
+                    {% elif places[0][0] == 'O' %}
+                        O
+                    {% endif %}
+                </button>
+
+
+                <!-- 2 -->
+                <button
+                    type="button"
+                    class="cell"
+                    onclick="playMove(2)"
+                    {% if places[0][1] != '_' %}disabled{% endif %}
+                >
+                    {% if places[0][1] == '✘' %}
+                        ✘
+                    {% elif places[0][1] == 'O' %}
+                        O
+                    {% endif %}
+                </button>
+
+
+                <!-- 3 -->
+                <button
+                    type="button"
+                    class="cell"
+                    onclick="playMove(3)"
+                    {% if places[0][2] != '_' %}disabled{% endif %}
+                >
+                    {% if places[0][2] == '✘' %}
+                        ✘
+                    {% elif places[0][2] == 'O' %}
+                        O
+                    {% endif %}
+                </button>
+
+
+                <!-- 4 -->
+                <button
+                    type="button"
+                    class="cell"
+                    onclick="playMove(4)"
+                    {% if places[1][0] != '_' %}disabled{% endif %}
+                >
+                    {% if places[1][0] == '✘' %}
+                        ✘
+                    {% elif places[1][0] == 'O' %}
+                        O
+                    {% endif %}
+                </button>
+
+
+                <!-- 5 -->
+                <button
+                    type="button"
+                    class="cell"
+                    onclick="playMove(5)"
+                    {% if places[1][1] != '_' %}disabled{% endif %}
+                >
+                    {% if places[1][1] == '✘' %}
+                        ✘
+                    {% elif places[1][1] == 'O' %}
+                        O
+                    {% endif %}
+                </button>
+
+
+                <!-- 6 -->
+                <button
+                    type="button"
+                    class="cell"
+                    onclick="playMove(6)"
+                    {% if places[1][2] != '_' %}disabled{% endif %}
+                >
+                    {% if places[1][2] == '✘' %}
+                        ✘
+                    {% elif places[1][2] == 'O' %}
+                        O
+                    {% endif %}
+                </button>
+
+
+                <!-- 7 -->
+                <button
+                    type="button"
+                    class="cell"
+                    onclick="playMove(7)"
+                    {% if places[2][0] != '_' %}disabled{% endif %}
+                >
+                    {% if places[2][0] == '✘' %}
+                        ✘
+                    {% elif places[2][0] == 'O' %}
+                        O
+                    {% endif %}
+                </button>
+
+
+                <!-- 8 -->
+                <button
+                    type="button"
+                    class="cell"
+                    onclick="playMove(8)"
+                    {% if places[2][1] != '_' %}disabled{% endif %}
+                >
+                    {% if places[2][1] == '✘' %}
+                        ✘
+                    {% elif places[2][1] == 'O' %}
+                        O
+                    {% endif %}
+                </button>
+
+
+                <!-- 9 -->
+                <button
+                    type="button"
+                    class="cell"
+                    onclick="playMove(9)"
+                    {% if places[2][2] != '_' %}disabled{% endif %}
+                >
+                    {% if places[2][2] == '✘' %}
+                        ✘
+                    {% elif places[2][2] == 'O' %}
+                        O
+                    {% endif %}
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- Status and Reset -->
+
+        <div class="side-panel">
+
+            <div class="status-title">
+                GAME STATUS
+            </div>
+
+            <div class="status">
+
+                {% if placed == false %}
+                    {{ place[1] }}
+                {% else %}
+                    Tap an empty square
+                {% endif %}
+
+            </div>
+
+
+            <form action="/reset" method="post">
+
+                <button
+                    type="submit"
+                    class="reset-btn"
+                >
+                    Reset Game
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function playMove(position) {
+
+    document.getElementById("selectedPlace").value = position;
+
+    document.getElementById("moveForm").submit();
+
+}
+
+</script>
+
 </body>
 </html>
