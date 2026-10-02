@@ -1,17 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <title>Welcome</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Tic-Tac-Toe</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            min-height: 100vh;
+
+            background: #fff8dc;
+
+            font-family: Arial, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+        }
+
+
+        .intro-container {
+            width: 100%;
+            max-width: 380px;
+
+            background: white;
+
+            padding: 30px 25px;
+
+            border-radius: 14px;
+
+            text-align: center;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .intro-container h1 {
+            margin: 0 0 8px;
+
+            font-size: 30px;
+
+            color: #222;
+        }
+
+
+        .subtitle {
+            margin: 0 0 22px;
+
+            font-size: 14px;
+
+            color: #666;
+        }
+
+
+        .players {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .player {
+            padding: 7px 12px;
+
+            border-radius: 7px;
+
+            background: #fff8dc;
+
+            font-size: 13px;
+
+            color: #333;
+        }
+
+
+        .name-input {
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            margin-bottom: 12px;
+        }
+
+
+        .name-input:focus {
+            border-color: #aaa;
+        }
+
+
+        .start-btn {
+            width: 100%;
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #222;
+
+            color: white;
+
+            font-size: 14px;
+
+            cursor: pointer;
+        }
+
+
+        .start-btn:hover {
+            background: #444;
+        }
+
+
+        @media (max-width: 400px) {
+
+            .intro-container {
+                padding: 25px 18px;
+            }
+
+            .intro-container h1 {
+                font-size: 27px;
+            }
+        }
+
+    </style>
+
 </head>
-<body bgcolor="#fff8dc">
-<header>
-		<center><h1>welcome to the game</h1>
-		<p>YOU(X) vs Computer(O)</p></center>
-	</header>
-<form method="post">
-    <h1 align="center">Enter your name : <input type="text" name="name"> <button type="submit">Start</button> </h1>
-</form>
+
+
+<body>
+
+<div class="intro-container">
+
+    <h1>
+        Welcome to the Game
+    </h1>
+
+
+    <p class="subtitle">
+        Let's play Tic-Tac-Toe
+    </p>
+
+
+    <div class="players">
+
+        <div class="player">
+            YOU · X
+        </div>
+
+        <div class="player">
+            COMPUTER · O
+        </div>
+
+    </div>
+
+
+    <form method="post">
+
+        <input
+            type="text"
+            name="name"
+            class="name-input"
+            placeholder="Enter your name"
+            required
+        >
+
+
+        <button
+            type="submit"
+            class="start-btn"
+        >
+            Start Game
+        </button>
+
+    </form>
+
+</div>
 
 </body>
+
 </html>
