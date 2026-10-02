@@ -1,42 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Winner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Game Over</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background: #fff8dc;
+
+            font-family: Arial, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .win-container {
+            width: 100%;
+            max-width: 380px;
+
+            background: white;
+
+            padding: 28px 24px;
+
+            border-radius: 14px;
+
+            text-align: center;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .game-over {
+            font-size: 13px;
+
+            color: #888;
+
+            margin-bottom: 8px;
+
+            letter-spacing: 1px;
+        }
+
+        .result {
+            font-size: 30px;
+
+            color: #222;
+
+            margin: 0 0 8px;
+        }
+
+        .message {
+            font-size: 14px;
+
+            color: #666;
+
+            margin-bottom: 22px;
+        }
+
+        /* Final board */
+
+        .board {
+            width: 210px;
+            height: 210px;
+
+            margin: 0 auto 24px;
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+
+            gap: 5px;
+        }
+
+        .cell {
+            background: #fff8dc;
+
+            border-radius: 7px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        /* Play again */
+
+        .reset-btn {
+            width: 100%;
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #222;
+
+            color: white;
+
+            font-size: 14px;
+
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background: #444;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 400px) {
+
+            .win-container {
+                padding: 24px 18px;
+            }
+
+            .board {
+                width: 190px;
+                height: 190px;
+            }
+
+            .result {
+                font-size: 26px;
+            }
+        }
+
+    </style>
 </head>
-<body bgcolor="#fff8dc">
-<header>
-		<center>{% if who=='O' %}
-<h1>{{name}} I won the match!!</h1>
-{% elif who=='Draw' %}
-<h1>The match is a draw!!</h1>
-{% else %}
-<h1>{{name}} You won the match!!</h1>
-{% endif %}</center>
-	</header>
-<center><table border="10" cellpadding="10" bgcolor="silver">
-    <tr>
-        <th>&emsp;{{places[0][0]}}&emsp;</th>
-        <th>&emsp;{{places[0][1]}}&emsp;</th>
-        <th>&emsp;{{places[0][2]}}&emsp;</th>
-    </tr>
-    <tr>
-        <th>&emsp;{{places[1][0]}}&emsp;</th>
-        <th>&emsp;{{places[1][1]}}&emsp;</th>
-        <th>&emsp;{{places[1][2]}}&emsp;</th>
-    </tr>
-    <tr>
-        <th>&emsp;{{places[2][0]}}&emsp;</th>
-        <th>&emsp;{{places[2][1]}}&emsp;</th>
-        <th>&emsp;{{places[2][2]}}&emsp;</th>
-    </tr>
-</table></center>
-<h1></h1>
-<h1></h1>
-<h1></h1>
-<h1></h1>
-<form action="/reset" method="post">
-    <center><button type="submit">Play Again</button></center>
-</form>
+
+
+<body>
+
+<div class="win-container">
+
+    <div class="game-over">
+        GAME OVER
+    </div>
+
+
+    {% if who == "✘" %}
+
+        <h1 class="result">
+            You Won!
+        </h1>
+
+        <p class="message">
+            Congratulations, {{ name }}!
+        </p>
+
+    {% elif who == "O" %}
+
+        <h1 class="result">
+            Computer Won!
+        </h1>
+
+        <p class="message">
+            Better luck next time, {{ name }}!
+        </p>
+
+    {% elif who == "Draw" %}
+
+        <h1 class="result">
+            It's a Draw!
+        </h1>
+
+        <p class="message">
+            Good game, {{ name }}!
+        </p>
+
+    {% endif %}
+
+
+    <!-- Final Board -->
+
+    <div class="board">
+
+        <!-- 1 -->
+        <div class="cell">
+            {% if places[0][0] == '✘' %}
+                ✘
+            {% elif places[0][0] == 'O' %}
+                O
+            {% endif %}
+        </div>
+
+        <!-- 2 -->
+        <div class="cell">
+            {% if places[0][1] == '✘' %}
+                ✘
+            {% elif places[0][1] == 'O' %}
+                O
+            {% endif %}
+        </div>
+
+        <!-- 3 -->
+        <div class="cell">
+            {% if places[0][2] == '✘' %}
+                ✘
+            {% elif places[0][2] == 'O' %}
+                O
+            {% endif %}
+        </div>
+
+        <!-- 4 -->
+        <div class="cell">
+            {% if places[1][0] == '✘' %}
+                ✘
+            {% elif places[1][0] == 'O' %}
+                O
+            {% endif %}
+        </div>
+
+        <!-- 5 -->
+        <div class="cell">
+            {% if places[1][1] == '✘' %}
+                ✘
+            {% elif places[1][1] == 'O' %}
+                O
+            {% endif %}
+        </div>
+
+        <!-- 6 -->
+        <div class="cell">
+            {% if places[1][2] == '✘' %}
+                ✘
+            {% elif places[1][2] == 'O' %}
+                O
+            {% endif %}
+        </div>
+
+        <!-- 7 -->
+        <div class="cell">
+            {% if places[2][0] == '✘' %}
+                ✘
+            {% elif places[2][0] == 'O' %}
+                O
+            {% endif %}
+        </div>
+
+        <!-- 8 -->
+        <div class="cell">
+            {% if places[2][1] == '✘' %}
+                ✘
+            {% elif places[2][1] == 'O' %}
+                O
+            {% endif %}
+        </div>
+
+        <!-- 9 -->
+        <div class="cell">
+            {% if places[2][2] == '✘' %}
+                ✘
+            {% elif places[2][2] == 'O' %}
+                O
+            {% endif %}
+        </div>
+
+    </div>
+
+
+    <!-- Play Again -->
+
+    <form action="/reset" method="post">
+
+        <button type="submit" class="reset-btn">
+            Play Again
+        </button>
+
+    </form>
+
+</div>
+
 </body>
+
 </html>
